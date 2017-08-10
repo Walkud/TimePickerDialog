@@ -93,6 +93,40 @@ public class NumericWheelAdapter extends AbstractWheelTextAdapter {
         this.unit = unit;
     }
 
+    /**
+     * Constructor
+     *
+     * @param context  the current context
+     * @param minValue the wheel min value
+     * @param maxValue the wheel max value
+     * @param format   the format string
+     * @param unit     the wheel unit value
+     */
+    public NumericWheelAdapter(Context context, int minValue, int maxValue, String format, String unit, int itemResource) {
+        super(context, itemResource);
+        this.minValue = minValue;
+        this.maxValue = maxValue;
+        this.format = format;
+        this.unit = unit;
+    }
+
+    /**
+     * Constructor
+     *
+     * @param context  the current context
+     * @param minValue the wheel min value
+     * @param maxValue the wheel max value
+     * @param format   the format string
+     * @param unit     the wheel unit value
+     */
+    public NumericWheelAdapter(Context context, int minValue, int maxValue, String format, String unit, int itemResource, int itemTextResource) {
+        super(context, itemResource, itemTextResource);
+        this.minValue = minValue;
+        this.maxValue = maxValue;
+        this.format = format;
+        this.unit = unit;
+    }
+
     @Override
     public CharSequence getItemText(int index) {
         if (index >= 0 && index < getItemsCount()) {

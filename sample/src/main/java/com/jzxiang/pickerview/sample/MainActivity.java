@@ -33,16 +33,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setCancelStringId("Cancel")
                 .setSureStringId("Sure")
                 .setTitleStringId("TimePicker")
-                .setYearText("Year")
-                .setMonthText("Month")
-                .setDayText("Day")
-                .setHourText("Hour")
-                .setMinuteText("Minute")
+                .setYearText("年")
+                .setMonthText("月")
+                .setDayText("日")
+                .setHourText("时")
+                .setMinuteText("分")
                 .setCyclic(false)
                 .setMinMillseconds(System.currentTimeMillis())
                 .setMaxMillseconds(System.currentTimeMillis() + tenYears)
                 .setCurrentMillseconds(System.currentTimeMillis())
-                .setThemeColor(getResources().getColor(R.color.timepicker_dialog_bg))
+                .setCenterLineColor(getResources().getColor(R.color.timepicker_dialog_bg))
                 .setType(Type.ALL)
                 .setWheelItemTextNormalColor(getResources().getColor(R.color.timetimepicker_default_text_color))
                 .setWheelItemTextSelectorColor(getResources().getColor(R.color.timepicker_toolbar_bg))
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                .build();
         mDialogYearMonth = new TimePickerDialog.Builder()
                 .setType(Type.YEAR_MONTH)
-                .setThemeColor(getResources().getColor(R.color.colorPrimary))
+                .setCenterLineColor(getResources().getColor(R.color.colorPrimary))
                 .setCallBack(this)
                 .build();
         mDialogYearMonthDay = new TimePickerDialog.Builder()
@@ -66,10 +66,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .build();
         mDialogMonthDayHourMinute = new TimePickerDialog.Builder()
                 .setType(Type.MONTH_DAY_HOUR_MIN)
+                .setShowCenterRect(true)//不显示中间透明选择区
                 .setCallBack(this)
                 .build();
         mDialogHourMinute = new TimePickerDialog.Builder()
                 .setType(Type.HOURS_MINS)
+                .setShowCancel(false)//不显示取消按钮
+                .setShowCenterRect(false)//不显示中间透明选择区
+                .setShowItemUnit(false)//不显示Item单位
+                .setCyclic(false)//不循环
+                .setItemResource(R.layout.cell_time_picker_item)//自定义Item
                 .setCallBack(this)
                 .build();
     }

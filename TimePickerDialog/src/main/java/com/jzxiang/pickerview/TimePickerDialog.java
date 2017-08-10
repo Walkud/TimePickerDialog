@@ -76,12 +76,14 @@ public class TimePickerDialog extends DialogFragment implements View.OnClickList
         TextView sure = (TextView) view.findViewById(R.id.tv_sure);
         sure.setOnClickListener(this);
         TextView title = (TextView) view.findViewById(R.id.tv_title);
-        View toolbar = view.findViewById(R.id.toolbar);
 
         title.setText(mPickerConfig.mTitleString);
         cancel.setText(mPickerConfig.mCancelString);
         sure.setText(mPickerConfig.mSureString);
-        toolbar.setBackgroundColor(mPickerConfig.mThemeColor);
+
+        if (!mPickerConfig.isShowCancel) {
+            cancel.setVisibility(View.INVISIBLE);
+        }
 
         mTimeWheel = new TimeWheel(view, mPickerConfig);
         return view;
@@ -96,7 +98,7 @@ public class TimePickerDialog extends DialogFragment implements View.OnClickList
             sureClicked();
         }
     }
-    
+
     /*
     * @desc This method returns the current milliseconds. If current milliseconds is not set,
     *       this will return the system milliseconds.
@@ -145,8 +147,23 @@ public class TimePickerDialog extends DialogFragment implements View.OnClickList
             return this;
         }
 
-        public Builder setThemeColor(int color) {
-            mPickerConfig.mThemeColor = color;
+        public Builder setCenterLineColor(int color) {
+            mPickerConfig.mCenterLineColor = color;
+            return this;
+        }
+
+        public Builder setCenterRectColor(int color) {
+            mPickerConfig.mCenterRectColor = color;
+            return this;
+        }
+
+        public Builder setShowCancel(boolean isShowCancel) {
+            mPickerConfig.isShowCancel = isShowCancel;
+            return this;
+        }
+
+        public Builder setShowCenterRect(boolean isShowCenterRect) {
+            mPickerConfig.isShowCenterRect = isShowCenterRect;
             return this;
         }
 
@@ -176,7 +193,12 @@ public class TimePickerDialog extends DialogFragment implements View.OnClickList
         }
 
         public Builder setWheelItemTextSelectorColor(int color) {
-            mPickerConfig.mWheelTVSelectorColor = color;
+            mPickerConfig.mWheelTVSelectorTextColor = color;
+            return this;
+        }
+
+        public Builder setUnitColor(int color) {
+            mPickerConfig.mUnitColor = color;
             return this;
         }
 
@@ -205,33 +227,48 @@ public class TimePickerDialog extends DialogFragment implements View.OnClickList
             return this;
         }
 
-        public Builder setYearText(String year){
+        public Builder setShowItemUnit(boolean isShowItemUnit) {
+            mPickerConfig.mIsShowItemUnit = isShowItemUnit;
+            return this;
+        }
+
+        public Builder setYearText(String year) {
             mPickerConfig.mYear = year;
             return this;
         }
 
-        public Builder setMonthText(String month){
+        public Builder setMonthText(String month) {
             mPickerConfig.mMonth = month;
             return this;
         }
 
-        public Builder setDayText(String day){
+        public Builder setDayText(String day) {
             mPickerConfig.mDay = day;
             return this;
         }
 
-        public Builder setHourText(String hour){
+        public Builder setHourText(String hour) {
             mPickerConfig.mHour = hour;
             return this;
         }
 
-        public Builder setMinuteText(String minute){
+        public Builder setMinuteText(String minute) {
             mPickerConfig.mMinute = minute;
             return this;
         }
 
         public Builder setCallBack(OnDateSetListener listener) {
             mPickerConfig.mCallBack = listener;
+            return this;
+        }
+
+        public Builder setItemResource(int itemResource) {
+            mPickerConfig.mItemResource = itemResource;
+            return this;
+        }
+
+        public Builder setItemTextResource(int itemTextResource) {
+            mPickerConfig.mItemTextResource = itemTextResource;
             return this;
         }
 

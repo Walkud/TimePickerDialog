@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="color_fa">#FAFAFA</color>
+    <color name="color_eb">#EBEBEB</color>
+    <color name="def_black_txt_color">#221F1F</color>
+    <color name="def_info_txt_color">#ABABAB</color>
+    <color name="def_gold_color">#E6C077</color>
     <color name="timetimepicker_default_text_color">#999999</color>
-    <color name="timepicker_toolbar_bg">#e60012</color>
+    <color name="timepicker_toolbar_bg">@color/color_fa</color>
     <color name="timepicker_dialog_bg">#80000000</color>
     <color name="timepicker_line">#e8e8e8</color>
+
 </resources>

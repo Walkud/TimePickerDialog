@@ -35,6 +35,7 @@ import com.jzxiang.pickerview.R;
 import com.jzxiang.pickerview.adapters.WheelViewAdapter;
 import com.jzxiang.pickerview.config.DefaultConfig;
 import com.jzxiang.pickerview.config.PickerConfig;
+import com.jzxiang.pickerview.utils.Utils;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -64,6 +65,8 @@ public class WheelView extends View {
     // Cyclic
     boolean isCyclic = false;
     int defaultColor, selectorColor;
+    private String unit;
+    private int unitTextSize = DefaultConfig.TV_SIZE;
     // Wheel Values
     private int currentItem = 0;
     // Count of visible items
@@ -73,6 +76,7 @@ public class WheelView extends View {
     // Scrolling
     private WheelScroller scroller;
     private boolean isScrollingPerformed;
+    private boolean isShowCenterRect;
     private int scrollingOffset;
     // Items layout
     private LinearLayout itemsLayout;
@@ -83,7 +87,8 @@ public class WheelView extends View {
 
     // Recycle
     private WheelRecycle recycle = new WheelRecycle(this);
-    private Paint mPaintLineCenter, mPaintLineRight, mPaintRectCenter;
+    private Paint mUnitPaint, mPaintLineCenter, mPaintLineRight, mPaintRectCenter;
+    private Paint.FontMetrics fontMetrics;
     private int mLineRightMar;
     // Listeners
     private List<OnWheelChangedListener> changingListeners = new LinkedList<OnWheelChangedListener>();
@@ -170,10 +175,17 @@ public class WheelView extends View {
     private void initData(Context context) {
         scroller = new WheelScroller(getContext(), scrollingListener);
 
+        mUnitPaint = new Paint();
+        mUnitPaint.setColor(DefaultConfig.UNIT_COLOR);
+        mUnitPaint.setAntiAlias(true);
+        mUnitPaint.setTextSize(Utils.dp2px(getContext(), unitTextSize));
+        mUnitPaint.setTextAlign(Paint.Align.CENTER);
+        fontMetrics = mUnitPaint.getFontMetrics();
+
         mPaintLineCenter = new Paint();
         mPaintLineCenter.setColor(DefaultConfig.COLOR);
         mPaintLineCenter.setAntiAlias(true);
-        mPaintLineCenter.setStrokeWidth(1);
+        mPaintLineCenter.setStrokeWidth(2);
         mPaintLineCenter.setStyle(Paint.Style.FILL);
 
         mPaintLineRight = new Paint();
@@ -194,19 +206,23 @@ public class WheelView extends View {
 
         defaultColor = DefaultConfig.TV_NORMAL_COLOR;
         selectorColor = DefaultConfig.TV_SELECTOR_COLOR;
-
     }
 
     public void setConfig(PickerConfig config) {
-        mPaintLineCenter.setColor(config.mThemeColor);
+        mUnitPaint.setColor(config.mUnitColor);
+        mPaintLineCenter.setColor(config.mCenterLineColor);
 
-        mPaintRectCenter.setColor(config.mThemeColor);
+        isShowCenterRect = config.isShowCenterRect;
+        mPaintRectCenter.setColor(config.mCenterRectColor);
         mPaintRectCenter.setAlpha((int) (0.1 * 255));
 
         defaultColor = config.mWheelTVNormalColor;
-        selectorColor = config.mWheelTVSelectorColor;
+        selectorColor = config.mWheelTVSelectorTextColor;
     }
 
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
 
     /**
      * Set the the specified scrolling interpolator
@@ -480,7 +496,7 @@ public class WheelView extends View {
      * Initializes resources
      */
     private void initResourcesIfNecessary() {
-        setBackgroundResource(android.R.color.white);
+        setBackgroundResource(R.color.color_fa);
     }
 
     /**
@@ -601,6 +617,7 @@ public class WheelView extends View {
             updateView();
             drawItems(canvas);
             drawCenterRect(canvas);
+            drawUnit(canvas);
         }
     }
 
@@ -631,15 +648,34 @@ public class WheelView extends View {
         int offset = (int) (getItemHeight() / 2 * 1.2);
 //        centerDrawable.setBounds(0, center - offset, getWidth(), center + offset);
 //        centerDrawable.draw(canvas);
-        canvas.drawRect(0, center - offset, getWidth(), center + offset, mPaintRectCenter);
-
+        if (isShowCenterRect) {
+            canvas.drawRect(0, center - offset, getWidth(), center + offset, mPaintRectCenter);
+        }
         canvas.drawLine(0, center - offset, getWidth(), center - offset, mPaintLineCenter);
         canvas.drawLine(0, center + offset, getWidth(), center + offset, mPaintLineCenter);
 
-        int x = getWidth() - 1;
-        canvas.drawLine(x, mLineRightMar, x, getHeight() - mLineRightMar, mPaintLineRight);
+//        int x = getWidth() - 1;
+//        canvas.drawLine(x, mLineRightMar, x, getHeight() - mLineRightMar, mPaintLineRight);
     }
 
+    /**
+     * Draw unit value
+     */
+    private void drawUnit(Canvas canvas) {
+        float xOffset = mUnitPaint.measureText(unit);
+        float x = getWidth() - (xOffset * 1.5f);
+
+        canvas.drawText(unit, x, getBaseY(), mUnitPaint);
+    }
+
+    /**
+     * 获取文字Y轴基准线位置
+     *
+     * @return
+     */
+    private float getBaseY() {
+        return getHeight() - (getHeight() - (fontMetrics.bottom - fontMetrics.top)) / 2 - fontMetrics.bottom;
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {

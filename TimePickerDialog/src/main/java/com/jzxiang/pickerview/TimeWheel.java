@@ -6,7 +6,6 @@ import android.view.View;
 import com.jzxiang.pickerview.adapters.NumericWheelAdapter;
 import com.jzxiang.pickerview.config.PickerConfig;
 import com.jzxiang.pickerview.data.source.TimeRepository;
-import com.jzxiang.pickerview.utils.PickerContants;
 import com.jzxiang.pickerview.utils.Utils;
 import com.jzxiang.pickerview.wheel.OnWheelChangedListener;
 import com.jzxiang.pickerview.wheel.WheelView;
@@ -74,24 +73,35 @@ public class TimeWheel {
         hour = (WheelView) view.findViewById(R.id.hour);
         minute = (WheelView) view.findViewById(R.id.minute);
 
+        View startSplitView = view.findViewById(R.id.start_split_view);
+        View yearMonthSplitView = view.findViewById(R.id.year_month_split_view);
+        View monthDaySplitView = view.findViewById(R.id.month_day_split_view);
+        View dayHourSplitView = view.findViewById(R.id.day_hour_split_view);
+        View hourMinuteSplitView = view.findViewById(R.id.hour_minute_split_view);
+        View endSplitView = view.findViewById(R.id.end_split_view);
+
         switch (mPickerConfig.mType) {
             case ALL:
-
                 break;
             case YEAR_MONTH_DAY:
                 Utils.hideViews(hour, minute);
+                Utils.showViews(startSplitView, yearMonthSplitView, monthDaySplitView, endSplitView);
                 break;
             case YEAR_MONTH:
                 Utils.hideViews(day, hour, minute);
+                Utils.showViews(startSplitView, yearMonthSplitView, endSplitView);
                 break;
             case MONTH_DAY_HOUR_MIN:
                 Utils.hideViews(year);
+                Utils.showViews(startSplitView, monthDaySplitView, dayHourSplitView, hourMinuteSplitView, endSplitView);
                 break;
             case HOURS_MINS:
                 Utils.hideViews(year, month, day);
+                Utils.showViews(startSplitView, hourMinuteSplitView, endSplitView);
                 break;
             case YEAR:
                 Utils.hideViews(month, day, hour, minute);
+                Utils.showViews(startSplitView, endSplitView);
                 break;
         }
 
@@ -111,10 +121,11 @@ public class TimeWheel {
         int minYear = mRepository.getMinYear();
         int maxYear = mRepository.getMaxYear();
 
-        mYearAdapter = new NumericWheelAdapter(mContext, minYear, maxYear, PickerContants.FORMAT, mPickerConfig.mYear);
+        mYearAdapter = getNumericWheelAdapter(minYear, maxYear, mPickerConfig.mYear);
         mYearAdapter.setConfig(mPickerConfig);
         year.setViewAdapter(mYearAdapter);
         year.setCurrentItem(mRepository.getDefaultCalendar().year - minYear);
+        year.setUnit(mPickerConfig.mYear);
     }
 
     void initMonth() {
@@ -123,6 +134,7 @@ public class TimeWheel {
         int minMonth = mRepository.getMinMonth(curYear);
         month.setCurrentItem(mRepository.getDefaultCalendar().month - minMonth);
         month.setCyclic(mPickerConfig.cyclic);
+        month.setUnit(mPickerConfig.mMonth);
     }
 
     void initDay() {
@@ -133,6 +145,7 @@ public class TimeWheel {
         int minDay = mRepository.getMinDay(curYear, curMonth);
         day.setCurrentItem(mRepository.getDefaultCalendar().day - minDay);
         day.setCyclic(mPickerConfig.cyclic);
+        day.setUnit(mPickerConfig.mDay);
     }
 
     void initHour() {
@@ -144,6 +157,7 @@ public class TimeWheel {
         int minHour = mRepository.getMinHour(curYear, curMonth, curDay);
         hour.setCurrentItem(mRepository.getDefaultCalendar().hour - minHour);
         hour.setCyclic(mPickerConfig.cyclic);
+        hour.setUnit(mPickerConfig.mHour);
     }
 
     void initMinute() {
@@ -156,7 +170,7 @@ public class TimeWheel {
 
         minute.setCurrentItem(mRepository.getDefaultCalendar().minute - minMinute);
         minute.setCyclic(mPickerConfig.cyclic);
-
+        minute.setUnit(mPickerConfig.mMinute);
     }
 
     void updateMonths() {
@@ -166,7 +180,7 @@ public class TimeWheel {
         int curYear = getCurrentYear();
         int minMonth = mRepository.getMinMonth(curYear);
         int maxMonth = mRepository.getMaxMonth(curYear);
-        mMonthAdapter = new NumericWheelAdapter(mContext, minMonth, maxMonth, PickerContants.FORMAT, mPickerConfig.mMonth);
+        mMonthAdapter = getNumericWheelAdapter(minMonth, maxMonth, mPickerConfig.mMonth);
         mMonthAdapter.setConfig(mPickerConfig);
         month.setViewAdapter(mMonthAdapter);
 
@@ -188,7 +202,7 @@ public class TimeWheel {
 
         int maxDay = mRepository.getMaxDay(curYear, curMonth);
         int minDay = mRepository.getMinDay(curYear, curMonth);
-        mDayAdapter = new NumericWheelAdapter(mContext, minDay, maxDay, PickerContants.FORMAT, mPickerConfig.mDay);
+        mDayAdapter = getNumericWheelAdapter(minDay, maxDay, mPickerConfig.mDay);
         mDayAdapter.setConfig(mPickerConfig);
         day.setViewAdapter(mDayAdapter);
 
@@ -213,7 +227,7 @@ public class TimeWheel {
         int minHour = mRepository.getMinHour(curYear, curMonth, curDay);
         int maxHour = mRepository.getMaxHour(curYear, curMonth, curDay);
 
-        mHourAdapter = new NumericWheelAdapter(mContext, minHour, maxHour, PickerContants.FORMAT, mPickerConfig.mHour);
+        mHourAdapter = getNumericWheelAdapter(minHour, maxHour, mPickerConfig.mHour);
         mHourAdapter.setConfig(mPickerConfig);
         hour.setViewAdapter(mHourAdapter);
 
@@ -233,7 +247,7 @@ public class TimeWheel {
         int minMinute = mRepository.getMinMinute(curYear, curMonth, curDay, curHour);
         int maxMinute = mRepository.getMaxMinute(curYear, curMonth, curDay, curHour);
 
-        mMinuteAdapter = new NumericWheelAdapter(mContext, minMinute, maxMinute, PickerContants.FORMAT, mPickerConfig.mMinute);
+        mMinuteAdapter = getNumericWheelAdapter(minMinute, maxMinute, mPickerConfig.mMinute);
         mMinuteAdapter.setConfig(mPickerConfig);
         minute.setViewAdapter(mMinuteAdapter);
 
@@ -270,6 +284,23 @@ public class TimeWheel {
         int curHour = getCurrentHour();
 
         return minute.getCurrentItem() + mRepository.getMinMinute(curYear, curMonth, curDay, curHour);
+    }
+
+    public NumericWheelAdapter getNumericWheelAdapter(int minValue, int maxValue,
+                                                      String unit) {
+
+        //是否显示单位
+        unit = mPickerConfig.mIsShowItemUnit ? unit : "";
+
+        if (mPickerConfig.mItemResource != 0 && mPickerConfig.mItemTextResource != 0) {
+            return new NumericWheelAdapter(mContext, minValue, maxValue, mPickerConfig.mItemFormat, unit, mPickerConfig.mItemResource, mPickerConfig.mItemTextResource);
+        }
+
+        if (mPickerConfig.mItemResource != 0) {
+            return new NumericWheelAdapter(mContext, minValue, maxValue, mPickerConfig.mItemFormat, unit, mPickerConfig.mItemResource);
+        }
+
+        return new NumericWheelAdapter(mContext, minValue, maxValue, mPickerConfig.mItemFormat, unit);
     }
 
 

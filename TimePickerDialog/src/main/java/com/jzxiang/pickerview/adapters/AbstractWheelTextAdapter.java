@@ -187,7 +187,7 @@ public abstract class AbstractWheelTextAdapter extends AbstractWheelAdapter {
         if (convertView == null) {
             convertView = getView(emptyItemResourceId, parent);
         }
-        if (emptyItemResourceId == TEXT_VIEW_ITEM_RESOURCE && convertView instanceof TextView) {
+        if (itemResourceId == TEXT_VIEW_ITEM_RESOURCE && convertView instanceof TextView) {
             configureTextView((TextView) convertView);
         }
 

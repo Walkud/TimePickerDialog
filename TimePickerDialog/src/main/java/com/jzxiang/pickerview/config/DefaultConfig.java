@@ -1,5 +1,7 @@
 package com.jzxiang.pickerview.config;
 
+import android.graphics.Color;
+
 import com.jzxiang.pickerview.data.Type;
 
 /**
@@ -7,10 +9,12 @@ import com.jzxiang.pickerview.data.Type;
  */
 public class DefaultConfig {
     public static final Type TYPE = Type.ALL;
-    public static final int COLOR = 0XFFE60012;
+    public static final int TRANSPARENT = Color.TRANSPARENT;
+    public static final int UNIT_COLOR = 0XFFABABAB;
+    public static final int COLOR = 0XFFE6C077;
     public static final int TOOLBAR_TV_COLOR = 0xFFFFFFFF;
     public static final int TV_NORMAL_COLOR = 0xFF999999;
-    public static final int TV_SELECTOR_COLOR = 0XFF404040;
+    public static final int TV_SELECTOR_COLOR = 0XFF221F1F;
     public static final int TV_SIZE = 12;
     public static final boolean CYCLIC = true;
     public static String CANCEL = "取消";

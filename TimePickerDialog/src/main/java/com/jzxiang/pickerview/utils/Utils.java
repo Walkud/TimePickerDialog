@@ -1,5 +1,6 @@
 package com.jzxiang.pickerview.utils;
 
+import android.content.Context;
 import android.view.View;
 
 import com.jzxiang.pickerview.data.WheelCalendar;
@@ -33,5 +34,21 @@ public class Utils {
         for (int i = 0; i < views.length; i++) {
             views[i].setVisibility(View.GONE);
         }
+    }
+
+    public static void showViews(View... views) {
+        for (int i = 0; i < views.length; i++) {
+            views[i].setVisibility(View.VISIBLE);
+        }
+    }
+
+    //dp转px
+    public static int dp2px(Context context, float dipValue) {
+        return (int) (dipValue * context.getResources().getDisplayMetrics().density + 0.5f);
+    }
+
+    //px转dp
+    public static int px2dp(Context context, float px) {
+        return (int) (px / context.getResources().getDisplayMetrics().density + 0.5f);
     }
 }
