@@ -4,9 +4,7 @@ package com.jzxiang.pickerview.utils;
  * Created by jzxiang on 16/4/20.
  */
 public class PickerContants {
-    public static final String ZERO_FORMAT = "%02d";
-
-    public static final String FORMAT = "%1d";
+    public static final String FORMAT = "%02d";
 
     public static final int DEFAULT_MIN_YEAR = 2015;
     public static final int YEAR_COUNT = 50;

@@ -9,6 +9,7 @@ import com.jzxiang.pickerview.TimePickerDialog;
 import com.jzxiang.pickerview.data.Type;
 import com.jzxiang.pickerview.listener.OnDateSetListener;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -18,7 +19,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TimePickerDialog mDialogYearMonthDay;
     TimePickerDialog mDialogMonthDayHourMinute;
     TimePickerDialog mDialogHourMinute;
+    TimePickerDialog mDialogHourMinute2;
     TextView mTvTime;
+    TextView mTvTime2;
 
     SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -75,8 +78,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setShowCenterRect(false)//不显示中间透明选择区
                 .setShowItemUnit(false)//不显示Item单位
                 .setCyclic(false)//不循环
+                .setMinMillseconds(formatTime("05:05"))
+                .setMaxMillseconds(formatTime("20:20"))
+                .setCurrentMillseconds(formatTime("10:10"))
                 .setItemResource(R.layout.cell_time_picker_item)//自定义Item
                 .setCallBack(this)
+                .build();
+
+        mDialogHourMinute2 = new TimePickerDialog.Builder()
+                .setType(Type.HOURS_MINS)
+                .setShowCancel(false)//不显示取消按钮
+                .setShowCenterRect(false)//不显示中间透明选择区
+                .setShowItemUnit(false)//不显示Item单位
+                .setCyclic(false)//不循环
+                .setMinMillseconds(formatTime("10:10"))
+                .setMaxMillseconds(formatTime("22:22"))
+                .setCurrentMillseconds(formatTime("20:20"))
+                .setItemResource(R.layout.cell_time_picker_item)//自定义Item
+                .setCallBack(new OnDateSetListener() {
+                    @Override
+                    public void onDateSet(TimePickerDialog timePickerView, long millseconds) {
+                        String text = getDateToString(millseconds);
+                        mTvTime2.setText(text);
+                    }
+                })
                 .build();
     }
 
@@ -86,8 +111,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btn_year_month).setOnClickListener(this);
         findViewById(R.id.btn_month_day_hour_minute).setOnClickListener(this);
         findViewById(R.id.btn_hour_minute).setOnClickListener(this);
+        findViewById(R.id.btn_hour_minute2).setOnClickListener(this);
 
         mTvTime = (TextView) findViewById(R.id.tv_time);
+        mTvTime2 = (TextView) findViewById(R.id.tv_time2);
+
     }
 
     @Override
@@ -108,6 +136,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_hour_minute:
                 mDialogHourMinute.show(getSupportFragmentManager(), "hour_minute");
                 break;
+            case R.id.btn_hour_minute2:
+                mDialogHourMinute2.show(getSupportFragmentManager(), "hour_minute2");
+                break;
         }
     }
 
@@ -121,6 +152,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public String getDateToString(long time) {
         Date d = new Date(time);
         return sf.format(d);
+    }
+
+    /**
+     * 将HH:mm格式化为HH时 mm分
+     *
+     * @param time
+     * @return
+     */
+    public static long formatTime(String time) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        try {
+            Date date = sdf.parse(time);
+            return date.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 }

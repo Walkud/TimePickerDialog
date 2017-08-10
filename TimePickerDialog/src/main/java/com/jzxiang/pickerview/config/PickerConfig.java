@@ -3,7 +3,6 @@ package com.jzxiang.pickerview.config;
 import com.jzxiang.pickerview.data.Type;
 import com.jzxiang.pickerview.data.WheelCalendar;
 import com.jzxiang.pickerview.listener.OnDateSetListener;
-import com.jzxiang.pickerview.utils.PickerContants;
 
 
 /**
@@ -36,7 +35,7 @@ public class PickerConfig {
 
     public int mItemResource = 0;//Item Layout（可以是TextView,如果为ViewGroup则需要设置mItemTextResource）
     public int mItemTextResource = 0;//Item Child Layout(必须为TextView)
-    public String mItemFormat = PickerContants.FORMAT;
+    public String mItemFormat = "";
 
     /**
      * The min timeMillseconds

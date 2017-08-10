@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -274,6 +275,14 @@ public class TimePickerDialog extends DialogFragment implements View.OnClickList
 
         public TimePickerDialog build() {
             return newIntance(mPickerConfig);
+        }
+
+        public void show(FragmentManager fragmentManager, String tag) {
+            build().show(fragmentManager, tag);
+        }
+
+        public void show(FragmentManager fragmentManager) {
+            build().show(fragmentManager, TimePickerDialog.class.getSimpleName());
         }
 
     }
