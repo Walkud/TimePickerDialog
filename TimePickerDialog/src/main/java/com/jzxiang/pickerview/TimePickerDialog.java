@@ -136,6 +136,10 @@ public class TimePickerDialog extends DialogFragment implements View.OnClickList
         dismiss();
     }
 
+    public boolean hasChooseCustomYearStr() {
+        return mTimeWheel.hasChooseCustomYearStr();
+    }
+
     public static class Builder {
         PickerConfig mPickerConfig;
 
@@ -230,6 +234,11 @@ public class TimePickerDialog extends DialogFragment implements View.OnClickList
 
         public Builder setShowItemUnit(boolean isShowItemUnit) {
             mPickerConfig.mIsShowItemUnit = isShowItemUnit;
+            return this;
+        }
+
+        public Builder setLastYearStr(String lastYearStr) {
+            mPickerConfig.mCustomLastYearStr = lastYearStr;
             return this;
         }
 

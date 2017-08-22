@@ -123,6 +123,7 @@ public class TimeWheel {
 
         mYearAdapter = getNumericWheelAdapter(minYear, maxYear, mPickerConfig.mYear);
         mYearAdapter.setConfig(mPickerConfig);
+        mYearAdapter.setCustomLastStr(mPickerConfig.mCustomLastYearStr);
         year.setViewAdapter(mYearAdapter);
         year.setCurrentItem(mRepository.getDefaultCalendar().year - minYear);
         year.setUnit(mPickerConfig.mYear);
@@ -255,6 +256,15 @@ public class TimeWheel {
             minute.setCurrentItem(0, false);
     }
 
+    /**
+     * 是否选择自定义年份文本
+     *
+     * @return
+     */
+    public boolean hasChooseCustomYearStr() {
+        return mYearAdapter.hasCustomLastItem() && year.getCurrentItem() == mYearAdapter.getItemsCount() - 1;
+    }
+
     public int getCurrentYear() {
         return year.getCurrentItem() + mRepository.getMinYear();
     }
@@ -288,7 +298,6 @@ public class TimeWheel {
 
     public NumericWheelAdapter getNumericWheelAdapter(int minValue, int maxValue,
                                                       String unit) {
-
         //是否显示单位
         unit = mPickerConfig.mIsShowItemUnit ? unit : "";
 

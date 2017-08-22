@@ -19,7 +19,7 @@ public class PickerConfig {
     public String mSureString = DefaultConfig.SURE;
     public String mTitleString = DefaultConfig.TITLE;
     public int mToolBarTVColor = DefaultConfig.TOOLBAR_TV_COLOR;
-    public int mUnitColor =  DefaultConfig.UNIT_COLOR;
+    public int mUnitColor = DefaultConfig.UNIT_COLOR;
 
     public int mWheelTVNormalColor = DefaultConfig.TV_NORMAL_COLOR;
     public int mWheelTVSelectorTextColor = DefaultConfig.TV_SELECTOR_COLOR;
@@ -27,6 +27,7 @@ public class PickerConfig {
     public boolean cyclic = DefaultConfig.CYCLIC;
 
     public boolean mIsShowItemUnit = false;
+    public String mCustomLastYearStr = null;//年份Item最后选项文本，默认为null,不显示
     public String mYear = DefaultConfig.YEAR;
     public String mMonth = DefaultConfig.MONTH;
     public String mDay = DefaultConfig.DAY;

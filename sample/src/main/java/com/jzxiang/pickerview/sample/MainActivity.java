@@ -65,7 +65,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .build();
         mDialogYearMonthDay = new TimePickerDialog.Builder()
                 .setType(Type.YEAR_MONTH_DAY)
-                .setCallBack(this)
+                .setCallBack(new OnDateSetListener() {
+                    @Override
+                    public void onDateSet(TimePickerDialog timePickerView, long millseconds) {
+                        Date date = new Date(millseconds);
+
+                        String format;
+                        if (timePickerView.hasChooseCustomYearStr()) {
+                            format = "不限-MM-dd";
+                        } else {
+                            format = "yyyy-MM-dd";
+                        }
+                        String text = new SimpleDateFormat(format).format(date);
+                        mTvTime.setText(text);
+                    }
+                })
+                .setLastYearStr("不限")
                 .build();
         mDialogMonthDayHourMinute = new TimePickerDialog.Builder()
                 .setType(Type.MONTH_DAY_HOUR_MIN)

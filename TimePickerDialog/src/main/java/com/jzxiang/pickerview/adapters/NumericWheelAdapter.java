@@ -43,6 +43,8 @@ public class NumericWheelAdapter extends AbstractWheelTextAdapter {
     //unit
     private String unit;
 
+    //最后的自定义Item文本
+    private String customLastStr;
 
     /**
      * Constructor
@@ -129,20 +131,38 @@ public class NumericWheelAdapter extends AbstractWheelTextAdapter {
 
     @Override
     public CharSequence getItemText(int index) {
-        if (index >= 0 && index < getItemsCount()) {
-            int value = minValue + index;
-            String text = !TextUtils.isEmpty(format) ? String.format(format, value) : Integer.toString(value);
-            text = TextUtils.isEmpty(unit) ? text : text + unit;
 
-            return text;
+        if (index >= 0 && index < getItemsCount()) {
+            if (index == getItemsCount() - 1 && hasCustomLastItem()) {
+                return customLastStr;
+            } else {
+                int value = minValue + index;
+                String text = !TextUtils.isEmpty(format) ? String.format(format, value) : Integer.toString(value);
+                text = TextUtils.isEmpty(unit) ? text : text + unit;
+                return text;
+            }
         }
         return null;
     }
 
     @Override
     public int getItemsCount() {
-        return maxValue - minValue + 1;
+        //存在最后自定义Item文本值，则Count+2，否则默认为Count+1
+        int add = hasCustomLastItem() ? 2 : 1;
+        return maxValue - minValue + add;
     }
 
+    /**
+     * 是否存在最后自定义Item文本值
+     *
+     * @return
+     */
+    public boolean hasCustomLastItem() {
+        return customLastStr != null;
+    }
+
+    public void setCustomLastStr(String customLastStr) {
+        this.customLastStr = customLastStr;
+    }
 
 }
